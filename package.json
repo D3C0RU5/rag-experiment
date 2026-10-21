@@ -1,0 +1,35 @@
+{
+  "name": "rag",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D3C0RU5/rag-experiment.git"
+  },
+  "keywords": [],
+  "author": "D3C0RU5",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D3C0RU5/rag-experiment/issues"
+  },
+  "homepage": "https://github.com/D3C0RU5/rag-experiment#readme",
+  "dependencies": {
+    "@langchain/community": "^1.1.29",
+    "@langchain/core": "^1.2.20",
+    "dotenv": "^16.6.1",
+    "express": "^5.3.0",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.5",
+    "@types/pdf-parse": "^1.1.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
