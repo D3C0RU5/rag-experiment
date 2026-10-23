@@ -3,6 +3,7 @@ import type { QueryRequest, RAGResponse, Source } from "../types";
 import { searchDocuments } from "./query";
 import { llm } from "./genai";
 import { StringOutputParser } from "@langchain/core/output_parsers";
+import type { Response } from "express";
 
 const PROMPT_TEMPLATE = ChatPromptTemplate.fromMessages([
   [
@@ -66,4 +67,48 @@ export async function generateRAGResponse({
     answer,
     sources,
   };
+}
+
+export async function generateRAGStreamingResponse({
+  question,
+  topK = 3,
+  res,
+}: QueryRequest & { res: Response }): Promise<void> {
+  const searchResults = await searchDocuments({ question, topK });
+
+  if (searchResults.answers.length === 0) {
+    res.write(
+      `data: ${JSON.stringify({ answer: "Desculpe, não encontrei informações para sua pergunta." })}\n\n`,
+    );
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+
+  const sources: Source[] = searchResults.answers.map((item) => ({
+    fileName: item.metadata.filename,
+    page: item.metadata.page || 0,
+    score: item.score,
+  }));
+
+  res.write(
+    `data: ${JSON.stringify({ type: "sources", content: sources })}\n\n`,
+  );
+
+  // Construir contexto com base nas buscas
+  const context = searchResults.answers
+    .map((item, idx) => `[${idx + 1}]: ${item.text}`)
+    .join("\n\n");
+
+  // Chain de prompts para gerar respostas
+  const chains = PROMPT_TEMPLATE.pipe(llm).pipe(new StringOutputParser());
+
+  const stream = await chains.stream({ context, question });
+
+  for await (const chunk of stream) {
+    res.write(`data: ${JSON.stringify({ type: "token", content: chunk })}\n\n`);
+  }
+
+  res.write(`data: [DONE]\n\n`);
+  res.end();
 }

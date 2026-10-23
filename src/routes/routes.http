@@ -27,3 +27,16 @@ Accept: application/json
   "question": "Sobre o que trata o documento?",
   "topK": 4
 }
+
+### Consultar documento com streaming (SSE)
+# Execute o upload antes desta consulta. A resposta deve chegar em eventos data:.
+POST {{baseUrl}}/query/stream
+Content-Type: application/json
+Accept: text/event-stream
+
+{
+  "question": "Sobre o que trata o documento?",
+  "topK": 4
+}
+
+//curl -N -X POST http://localhost:3000/query/stream  -H 'Content-Type: application/json'  -H 'Accept: text/event-stream' -d '{"question":"Sobre o que trata o documento?","topK":4}'

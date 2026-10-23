@@ -29,7 +29,8 @@
     "dotenv": "^16.6.1",
     "express": "^5.3.0",
     "multer": "^2.5.0",
-    "pdf-parse": "^2.4.5"
+    "pdf-parse": "^2.4.5",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
