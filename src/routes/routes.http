@@ -1,0 +1,29 @@
+@baseUrl = http://localhost:3000
+
+### Verificar se o servidor está no ar
+GET {{baseUrl}}/
+Accept: application/json
+
+### Enviar um PDF para indexação
+# O caminho do arquivo é relativo a este routes.http.
+POST {{baseUrl}}/documents/upload
+Accept: application/json
+Content-Type: multipart/form-data; boundary=----RagUploadBoundary
+
+------RagUploadBoundary
+Content-Disposition: form-data; name="file"; filename="exemplo.pdf"
+Content-Type: application/pdf
+
+< ../../assets/exemplo.pdf
+------RagUploadBoundary--
+
+### Perguntar sobre o PDF indexado
+# Execute a requisição de upload antes desta consulta.
+POST {{baseUrl}}/query
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "Sobre o que trata o documento?",
+  "topK": 4
+}
