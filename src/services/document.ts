@@ -3,13 +3,7 @@ import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { embeddings } from "./genai";
 import { qdrantClient } from "./qdrant";
 import { config } from "../config";
-
-interface UploadResponse {
-  success: boolean;
-  documentId: string;
-  chunksCount: number;
-  message?: string;
-}
+import type { UploadResponse } from "../types";
 
 const textSplitter = new RecursiveCharacterTextSplitter({
   chunkSize: 1000,

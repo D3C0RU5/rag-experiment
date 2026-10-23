@@ -12,7 +12,7 @@ export const embeddings = new OllamaEmbeddings({
 // processamento das conversas
 export const llm = new ChatGoogleGenerativeAI({
   apiKey: config.genai.apiKey,
-  model: "gemini-2.5-flash",
+  model: "gemini-3.8-flash",
   temperature: 0,
   maxRetries: 2,
 });

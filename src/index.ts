@@ -4,6 +4,8 @@
 import path from "node:path";
 import { proccessDocument } from "./services/document";
 import { initQdrantCollection } from "./services/qdrant";
+import { searchDocuments } from "./services/query";
+import { generateRAGResponse } from "./services/rag";
 
 // const app = express();
 // const port = config.server.port;
@@ -18,15 +20,22 @@ import { initQdrantCollection } from "./services/qdrant";
 
 async function main() {
   try {
-    console.log("Iniciando collection");
-    await initQdrantCollection();
+    // console.log("Iniciando collection");
+    // await initQdrantCollection();
 
-    console.log("Processando documento");
-    const result = await proccessDocument(
-      path.resolve("./assets/poc-preview.pdf"),
-      "poc-preview.pdf",
-    );
-    console.log(`Processamento concluído:`, result);
+    // console.log("Processando documento");
+    // const result = await proccessDocument(
+    //   path.resolve("./assets/poc-preview.pdf"),
+    //   "poc-preview.pdf",
+    // );
+    // console.log(`Processamento concluído:`, result);
+
+    console.log("Iniciando busca");
+    const result = await generateRAGResponse({
+      question: "Como linhas de Produção devems ser ancoradas?",
+      topK: 3,
+    });
+    console.log(result);
   } catch (error) {
     console.error("Erro ao iniciar a aplicação", error);
     process.exitCode = 1;
